@@ -1,11 +1,12 @@
-import request from '@/utils/request'
+import request from "@/utils/request";
+import qs from 'qs'
 
 export function login(data) {
   return request({
-    url: '/login/manager',
-    method: 'post',
-    data
-  })
+    url: "login/manager",
+    method: "post",
+    data,
+  });
 }
 
 // export function getInfo(token) {
