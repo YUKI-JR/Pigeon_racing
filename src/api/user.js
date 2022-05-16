@@ -1,13 +1,15 @@
 import request from "@/utils/request";
-import qs from 'qs'
+import qs from "qs";
 
+// 登录
 export function login(data) {
   return request({
-    url: "login/manager",
+    url: "/login/manager",
     method: "post",
     data,
   });
 }
+
 
 // export function getInfo(token) {
 //   return request({

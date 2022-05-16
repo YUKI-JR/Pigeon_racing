@@ -32,14 +32,14 @@ router.beforeEach(async (to, from, next) => {
       } else {
         try {
           // get user info
-          await store.dispatch("user/getInfo");
+          // await store.dispatch("user/getInfo");
           next();
         } catch (error) {
           // remove token and go to login page to re-login
           await store.dispatch("user/resetToken");
-          Message.error({
-            message: error || "出现错误，请稍后再试",
-          });
+          // Message.error({
+          //   message: error || "出现错误，请稍后再试",
+          // });
           next();
           NProgress.done();
         }
