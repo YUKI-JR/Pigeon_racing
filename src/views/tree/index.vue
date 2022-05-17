@@ -72,7 +72,7 @@
           <el-option label="未死亡" value="false"></el-option>
           <el-option label="已死亡" value="true"></el-option>
         </el-select>
-        <el-button type="primary" size="default" @click="getAll()"
+        <el-button type="primary" size="default" @click="getAll"
           >查询</el-button
         >
         <el-button type="primary" size="default" @click="addOne"
@@ -104,14 +104,16 @@
             scope.row.dead == false ? "没死" : "死了"
           }}</template>
         </el-table-column>
-        <el-table-column prop="oint" label="积分" width="82">
+        <el-table-column prop="oint" label="积分">
           <template slot-scope="scope">{{
             scope.row.point == null ? "0" : scope.row.point
           }}</template>
         </el-table-column>
-        <el-table-column prop="oint" label="操作">
+        <el-table-column prop="oint" label="操作" width="170">
           <template slot-scope="scope">
-            <el-button type="warning" size="mini" @click="edit">编辑</el-button>
+            <el-button type="warning" size="mini" @click="edit(scope.row)"
+              >编辑</el-button
+            >
             <el-button type="danger" size="mini" @click="del(scope.row)"
               >删除</el-button
             >
@@ -123,6 +125,7 @@
 </template>
 
 <script>
+// import { getOnePigeon } from "@/api/table";
 import { getAllPigeon } from "@/api/table";
 import { deleteOnePigeon } from "@/api/table";
 
@@ -153,6 +156,17 @@ export default {
     this.getAll();
   },
   methods: {
+    // getOne() {
+    //   const id = "1526032343465332736"
+    //   getOnePigeon(id)
+    //     .then((res) => {
+    //       console.log(res);
+    //     })
+    //     .then(() => {
+    //       this.$message.success("查询成功！");
+    //     });
+    // },
+
     // 获取全部赛鸽信息
     getAll() {
       getAllPigeon(this.p_form, this.pageAndSize)
@@ -168,10 +182,27 @@ export default {
 
     // 删除单条鸽子信息
     del(row) {
-      deleteOnePigeon(row.id).then((res) => {
-        console.log(res);
-        this.$message.success("删除成功！");
-      });
+      this.$confirm("此操作将永久删除该赛鸽信息, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          deleteOnePigeon(row.id).then((res) => {
+            console.log(res);
+            this.$message({
+              type: "success",
+              message: "删除成功!",
+            });
+          setTimeout(this.getAll(), 2000);
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
     },
     addOne() {},
   },
@@ -184,13 +215,9 @@ export default {
   margin: 0.5vh auto;
   justify-content: center;
 }
-.query_head .el-input {
+.query_head .el-input,
+.el-button,
+.el-select {
   margin: 0.5vh 0.5vh;
-}
-.query_head .el-button {
-  margin: 0 0.5vh;
-}
-.query_head .el-select {
-  margin: 0 0.5vh;
 }
 </style>

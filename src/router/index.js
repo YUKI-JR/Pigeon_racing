@@ -58,9 +58,8 @@ export const constantRoutes = [
   {
     path: '/Competiton',
     component: Layout,
-    redirect: '/Competiton',
     name: 'Competiton',
-    meta: { title: 'Competiton', icon: 'el-icon-s-help' },
+    meta: { icon: 'el-icon-s-help' },
     children: [
       // {
       //   path: 'table',
@@ -72,7 +71,7 @@ export const constantRoutes = [
         path: 'Table',
         name: 'Table',
         component: () => import('@/views/tree/index'),
-        meta: { title: 'Table', icon: 'tree' }
+        meta: { title: '赛鸽信息', icon: 'tree' }
       }
     ]
   },
