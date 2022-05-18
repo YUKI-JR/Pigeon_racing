@@ -37,3 +37,27 @@ export function deleteOnePigeon(id) {
     },
   });
 }
+
+// 增加单只鸽子
+export function addOnePigeon(addform) {
+  return request({
+    url: "/pigeonInfo/save",
+    method: "post",
+    headers: {
+      token: token,
+    },
+    data: addform,
+  });
+}
+
+// 修改单只鸽子信息
+export function editOnePigeon(editform) {
+  return request({
+    url: "/pigeonInfo/update",
+    method: "post",
+    headers: {
+      token: token,
+    },
+    data: editform,
+  });
+}
