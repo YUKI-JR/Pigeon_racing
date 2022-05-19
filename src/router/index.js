@@ -56,9 +56,9 @@ export const constantRoutes = [
   },
 
   {
-    path: '/Competiton',
+    path: '/pigeon',
     component: Layout,
-    name: 'Competiton',
+    name: 'pigeon',
     meta: { icon: 'el-icon-s-help' },
     children: [
       // {
@@ -68,23 +68,23 @@ export const constantRoutes = [
       //   meta: { title: 'Table', icon: 'table' }
       // },
       {
-        path: 'Table',
+        path: 'table',
         name: 'Table',
         component: () => import('@/views/tree/index'),
-        meta: { title: '赛鸽信息', icon: 'tree' }
+        meta: { title: '赛鸽信息', icon: 'el-icon-trophy' }
       }
     ]
   },
 
   {
-    path: '/form',
+    path: '/flight',
     component: Layout,
     children: [
       {
         path: 'index',
-        name: 'Form',
+        name: 'flight',
         component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
+        meta: { title: '飞行信息', icon: 'el-icon-medal-1' }
       }
     ]
   },

@@ -1,78 +1,111 @@
 <template>
   <div>
     <div class="query_head">
-      <el-form id="aa" :model="p_form" ref="p_form">
-        <el-input
-          v-model="p_form.number"
-          size="normal"
-          placeholder="环号"
-          clearable
-          style="width: 10vw"
-        ></el-input>
-        <el-select
-          v-model="p_form.gender"
-          placeholder="鸽子性别"
-          style="width: 10vw"
-          clearable
-        >
-          <el-option label="雄" value="1"></el-option>
-          <el-option label="雌" value="0"></el-option>
-        </el-select>
-        <el-input
-          v-model="p_form.eyeType"
-          size="normal"
-          placeholder="眼砂"
-          clearable
-          style="width: 10vw"
-        ></el-input>
-        <el-input
-          v-model="p_form.color"
-          size="normal"
-          placeholder="羽色"
-          clearable
-          style="width: 10vw"
-        ></el-input>
-        <el-input
-          v-model="p_form.father"
-          size="normal"
-          placeholder="父（环号）"
-          clearable
-          style="width: 10vw"
-        ></el-input>
-        <el-input
-          v-model="p_form.mother"
-          size="normal"
-          placeholder="母（环号）"
-          clearable
-          style="width: 10vw"
-        ></el-input>
+      <el-form :model="p_form" ref="p_form">
+        <div style="width: 95%; margin: 2vh auto">
+          <el-input
+            v-model="p_form.number"
+            size="normal"
+            placeholder="环号"
+            clearable
+            style="width: 10%"
+          ></el-input>
+          <el-select
+            v-model="p_form.gender"
+            placeholder="鸽子性别"
+            style="width: 10%"
+            clearable
+          >
+            <el-option label="雄" value="1"></el-option>
+            <el-option label="雌" value="0"></el-option>
+          </el-select>
+          <el-select
+            v-model="p_form.eyeType"
+            placeholder="眼砂类型"
+            style="width: 10%"
+            clearable
+          >
+            <el-option label="牛" value="牛"></el-option>
+            <el-option label="黄" value="黄"></el-option>
+            <el-option label="砂" value="砂"></el-option>
+          </el-select>
+          <el-select
+            v-model="p_form.color"
+            placeholder="选择羽色"
+            style="width: 10%"
+            clearable
+          >
+            <el-option label="白" value="白"></el-option>
+            <el-option label="黑" value="黑"></el-option>
+            <el-option label="花" value="花"></el-option>
+            <el-option label="灰" value="灰"></el-option>
+            <el-option label="雨点" value="黄"></el-option>
+            <el-option label="雨白条" value="雨白条"></el-option>
+            <el-option label="红绛" value="红绛"></el-option>
+            <el-option label="灰白条" value="灰白条"></el-option>
+            <el-option label="红楞" value="红楞"></el-option>
+            <el-option label="深雨点" value="深雨点"></el-option>
+            <el-option label="银白" value="银白"></el-option>
+            <el-option label="灰雨点" value="灰雨点"></el-option>
+            <el-option label="深灰" value="深灰"></el-option>
+            <el-option label="绛白条" value="绛白条"></el-option>
+            <el-option label="麒麒花" value="麒麒花"></el-option>
+            <el-option label="花绛" value="花绛"></el-option>
+            <el-option label="百花" value="百花"></el-option>
+          </el-select>
+          <el-input
+            v-model="p_form.father"
+            size="normal"
+            placeholder="父（环号）"
+            clearable
+            style="width: 10%"
+          ></el-input>
+          <el-input
+            v-model="p_form.mother"
+            size="normal"
+            placeholder="母（环号）"
+            clearable
+            style="width: 10%"
+          ></el-input>
 
-        <el-select
-          v-model="p_form.lost"
-          placeholder="丢失状态"
-          style="width: 10vw"
-          clearable
-        >
-          <el-option label="未丢失" value="false"></el-option>
-          <el-option label="已丢失" value="true"></el-option>
-        </el-select>
-        <el-select
-          v-model="p_form.dead"
-          placeholder="死亡状态"
-          style="width: 10vw"
-          clearable
-        >
-          <el-option label="未死亡" value="false"></el-option>
-          <el-option label="已死亡" value="true"></el-option>
-        </el-select>
-        <el-button type="primary" size="default" @click="getAll"
-          >查询</el-button
-        >
-        <el-button type="primary" size="default" @click="dialogAddgsVisible = true;"
-          >添加</el-button
-        >
+          <el-select
+            v-model="p_form.lost"
+            placeholder="丢失状态"
+            style="width: 10%"
+            clearable
+          >
+            <el-option label="未丢失" value="false"></el-option>
+            <el-option label="已丢失" value="true"></el-option>
+          </el-select>
+          <el-select
+            v-model="p_form.dead"
+            placeholder="死亡状态"
+            style="width: 10%"
+            clearable
+          >
+            <el-option label="未死亡" value="false"></el-option>
+            <el-option label="已死亡" value="true"></el-option>
+          </el-select>
+          <el-button
+            type="primary"
+            size="default"
+            icon="el-icon-search"
+            @click="getAll"
+            style="float: right"
+            >查询</el-button
+          >
+        </div>
+        <div class="query_add" style="width: 95%; margin: 0 auto">
+          <el-button
+            style="width: 10%; float: right"
+            type="success"
+            size="default"
+            icon="el-icon-plus"
+            @click="dialogAddgsVisible = true"
+            >添加</el-button
+          >
+        </div>
       </el-form>
-
       <!-- 添加表单 -->
       <el-dialog
         title="添加赛鸽信息"
@@ -95,29 +128,29 @@
           <el-form-item label="性别" prop="gender">
             <el-select
               v-model="add_form.gender"
-              placeholder="选择赛鸽性别"
-              style="width: 100%"
+              placeholder="赛鸽性别"
+              style="width: 30%"
             >
               <el-option label="雄" :value="1"></el-option>
               <el-option label="雌" :value="0"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="眼砂类型" prop="eyeType">
+          <el-form-item label="眼砂" prop="eyeType">
             <el-select
               v-model="add_form.eyeType"
-              placeholder="选择眼砂类型"
-              style="width: 100%"
+              placeholder="眼砂类型"
+              style="width: 30%"
             >
               <el-option label="牛" value="牛"></el-option>
               <el-option label="黄" value="黄"></el-option>
               <el-option label="砂" value="砂"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="羽毛颜色" prop="color">
+          <el-form-item label="羽色" prop="color">
             <el-select
               v-model="add_form.color"
               placeholder="选择羽色"
-              style="width: 100%"
+              style="width: 30%"
             >
               <el-option label="白" value="白"></el-option>
               <el-option label="黑" value="黑"></el-option>
@@ -184,17 +217,17 @@
           <el-form-item label="性别" prop="gender">
             <el-select
               v-model="edit_form.gender"
-              placeholder="选择赛鸽性别"
+              placeholder="赛鸽性别"
               style="width: 100%"
             >
               <el-option label="雄" :value="1"></el-option>
               <el-option label="雌" :value="0"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="眼砂类型" prop="eyeType">
+          <el-form-item label="眼砂" prop="eyeType">
             <el-select
               v-model="edit_form.eyeType"
-              placeholder="选择眼砂类型"
+              placeholder="眼砂类型"
               style="width: 100%"
             >
               <el-option label="牛" value="牛"></el-option>
@@ -202,7 +235,7 @@
               <el-option label="砂" value="砂"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="羽毛颜色" prop="color">
+          <el-form-item label="羽色" prop="color">
             <el-select
               v-model="edit_form.color"
               placeholder="选择羽色"
@@ -262,9 +295,6 @@
               style="width: 100%"
             ></el-date-picker>
           </el-form-item>
-          <el-form-item label="积分">
-            <el-input v-model="edit_form.point" />
-          </el-form-item>
           <el-form-item>
             <el-button @click="editCancle">取消</el-button>
             <el-button type="primary" @click="editOneSubmit('edit_form')"
@@ -275,9 +305,8 @@
       </el-dialog>
     </div>
 
-    <div>
-      <el-table :data="tableData" border style="width: 100vw">
-        <el-table-column prop="id" label="id"> </el-table-column>
+    <div class="p_table">
+      <el-table :data="tableData" border style="width: 95%">
         <el-table-column prop="number" label="环号"> </el-table-column>
         <el-table-column prop="gender" label="性别">
           <template slot-scope="scope">{{
@@ -326,6 +355,22 @@
         </el-table-column>
       </el-table>
     </div>
+    <nav style="text-align:center;margin:3vh auto">
+    <div class="pages">
+      <div class="block">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page.sync="currentPage2"
+          :page-sizes="[10, 30, 50, 100]"
+          :page-size="10"
+          layout="total,sizes, prev, pager, next"
+          :total="totalElements"
+        >
+        </el-pagination>
+      </div>
+    </div>
+    </nav>
   </div>
 </template>
 
@@ -341,8 +386,9 @@ export default {
       tableData: [],
       dialogAddgsVisible: false,
       dialogEditVisible: false,
-
+      currentPage2: 5,
       Loading: true,
+      totalElements: null,
       // 查询表单
       p_form: {
         number: "",
@@ -367,7 +413,6 @@ export default {
         birthdate: null,
         lost: "",
         dead: "",
-        point: null,
       },
       // 编辑表单
       edit_form: {
@@ -391,7 +436,7 @@ export default {
         number: [
           { required: true, message: "请输入脚环号", trigger: "blur" },
           {
-            pattern: /^\d{2}-\d{2}-\d{6}$/,
+            pattern: /(\d\d-){0}\d{6}/,
             message: "环号必须为数字，且按照11-22-123456格式",
           },
         ],
@@ -403,14 +448,14 @@ export default {
         father: [
           { required: true, message: "请输入父（环号）", trigger: "blur" },
           {
-            pattern: /^\d{2}-\d{2}-\d{6}$/,
+            pattern: /(\d\d-){0}\d{6}/,
             message: "环号必须为数字，且按照11-22-123456格式",
           },
         ],
         mother: [
           { required: true, message: "请输入母（环号）", trigger: "blur" },
           {
-            pattern: /^\d{2}-\d{2}-\d{6}$/,
+            pattern: /(\d\d-){0}\d{6}/,
             message: "环号必须为数字，且按照11-22-123456格式",
           },
         ],
@@ -430,6 +475,7 @@ export default {
         .then((res) => {
           console.log(res);
           this.tableData = res.data.dataList;
+          this.totalElements = Number(res.data.totalElements);
         })
         .then(() => {
           this.$message.success("查询成功！");
@@ -512,19 +558,31 @@ export default {
           });
         });
     },
+    // 分页功能
+    handleSizeChange(val) {
+      this.pageAndSize.size = val;
+      this.getAll();
+    },
+    handleCurrentChange(val) {
+      this.pageAndSize.page = val;
+      this.getAll();
+    },
   },
 };
 </script>
 
 <style scoped>
 .query_head {
-  display: flex;
   margin: 0.5vh auto;
   justify-content: center;
 }
 .query_head .el-input,
 .el-button,
 .el-select {
+  margin: 0.5vh 0.5vh;
+}
+.query_add,
+.el-button {
   margin: 0.5vh 0.5vh;
 }
 
@@ -536,4 +594,14 @@ export default {
 .el-form-item__content .el-button {
   margin: 0 2vw;
 }
+
+.p_table {
+  width: 100%;
+}
+
+.el-table {
+  margin: 0 auto;
+}
+
+
 </style>
