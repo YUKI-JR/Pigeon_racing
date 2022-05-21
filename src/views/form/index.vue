@@ -76,7 +76,6 @@
       >
         <el-form
           :model="add_form"
-          :rules="rules"
           ref="add_form"
           label-width="6vw"
           style="width: 25vw"
@@ -172,7 +171,6 @@
       >
         <el-form
           :model="edit_form"
-          :rules="rules"
           ref="edit_form"
           label-width="6vw"
           style="width: 25vw"
@@ -259,25 +257,33 @@
         </el-table-column>
         <el-table-column
           prop="distance"
-          label="空距"
-          width="60"
+          label="空距(KM)"
+          width="100"
         ></el-table-column>
-        <el-table-column prop="longitude" label="经度"></el-table-column>
-        <el-table-column prop="latitude" label="纬度"></el-table-column>
-        <el-table-column prop="type" label="类型" width="60">
+        <el-table-column
+          prop="longitude"
+          label="经度"
+          width="80"
+        ></el-table-column>
+        <el-table-column
+          prop="latitude"
+          label="纬度"
+          width="80"
+        ></el-table-column>
+        <el-table-column prop="type" label="类型" width="80">
           <template slot-scope="scope">{{
-            scope.row.type === 0 ? "训练" : "比赛"
+            ["训练", "比赛"][scope.row.type]
           }}</template>
         </el-table-column>
         <el-table-column
           prop="atmospherePressure"
-          label="大气压"
-          width="70"
+          label="大气压(kPa)"
+          width="100"
         ></el-table-column>
         <el-table-column
           prop="temperature"
-          label="温度"
-          width="60"
+          label="温度(°C)"
+          width="80"
         ></el-table-column>
         <el-table-column
           prop="weather"
@@ -286,10 +292,10 @@
         ></el-table-column>
         <el-table-column
           prop="humidity"
-          label="湿度"
-          width="60"
+          label="湿度(%)"
+          width="80"
         ></el-table-column>
-        <el-table-column prop="windDirection" label="风向" width="60">
+        <el-table-column prop="windDirection" label="风向" width="80">
           <template slot-scope="scope">
             {{
               ["北", "东北", "东", "东南", "南", "西南", "西", "西北"][
@@ -300,15 +306,17 @@
         </el-table-column>
         <el-table-column
           prop="windSpeed"
-          label="风速"
-          width="60"
+          label="风速(m/s)"
+          width="100"
         ></el-table-column>
-        <el-table-column label="操作" widt="160">
+
+        <el-table-column label="操作" width="230">
           <template slot-scope="scope">
+            <el-button size="mini" @click="rank(scope.row.id)">排名</el-button>
             <el-button type="warning" size="mini" @click="edit(scope.row)"
               >编辑</el-button
             >
-            <el-button type="danger" size="mini" @click="del(scope.row)"
+            <el-button type="danger" size="mini" @click="del(scope.row.id)"
               >删除</el-button
             >
           </template>
@@ -346,6 +354,7 @@ import moment from "moment";
 export default {
   data() {
     return {
+      moment,
       tableData: [],
       dialogAddgsVisible: false,
       dialogEditVisible: false,
@@ -396,37 +405,6 @@ export default {
         size: 10,
       },
       dialogVisible: false,
-      rules: {
-        number: [
-          { required: true, message: "请输入脚环号", trigger: "blur" },
-          {
-            pattern: /(\d\d-){0}\d{6}/,
-            message: "环号必须为数字，且按照11-22-123456格式",
-          },
-        ],
-        gender: [
-          { required: true, message: "请选择赛鸽性别", trigger: "change" },
-        ],
-        eyeType: [{ required: true, message: "请输眼砂类型", trigger: "blur" }],
-        color: [{ required: true, message: "请输入羽色", trigger: "blur" }],
-        father: [
-          { required: true, message: "请输入父（环号）", trigger: "blur" },
-          {
-            pattern: /(\d\d-){0}\d{6}/,
-            message: "环号必须为数字，且按照11-22-123456格式",
-          },
-        ],
-        mother: [
-          { required: true, message: "请输入母（环号）", trigger: "blur" },
-          {
-            pattern: /(\d\d-){0}\d{6}/,
-            message: "环号必须为数字，且按照11-22-123456格式",
-          },
-        ],
-        birthdate: [
-          { required: true, message: "请选择赛鸽出生日期", trigger: "change" },
-        ],
-      },
     };
   },
   mounted() {
@@ -457,6 +435,16 @@ export default {
     edit(row) {
       (this.dialogEditVisible = true),
         (this.edit_form = Object.assign({}, row));
+    },
+
+    // 获取排名
+    rank(id) {
+      this.$router.push({
+        name: "Ranking",
+        params: {
+          id: id,
+        },
+      });
     },
 
     // 关闭编辑dialog
@@ -506,14 +494,14 @@ export default {
     },
 
     // 删除单条赛鸽信息
-    del(row) {
+    del(id) {
       this.$confirm("此操作将删除该飞行信息, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
       })
         .then(() => {
-          deleteOneFlight(row.id).then((res) => {
+          deleteOneFlight(id).then((res) => {
             console.log(res);
             this.$message({
               type: "success",

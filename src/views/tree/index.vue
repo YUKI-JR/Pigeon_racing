@@ -86,6 +86,11 @@
             <el-option label="未死亡" value="false"></el-option>
             <el-option label="已死亡" value="true"></el-option>
           </el-select>
+          <el-checkbox
+            label="按积分排名"
+            name="point"
+            @change="p_form.point = !p_form.point"
+          ></el-checkbox>
           <el-button
             type="primary"
             size="default"
@@ -308,13 +313,15 @@
     <div class="p_table">
       <el-table :data="tableData" border style="width: 95%">
         <el-table-column prop="number" label="环号"> </el-table-column>
-        <el-table-column prop="gender" label="性别">
+        <el-table-column prop="gender" label="性别" width="60">
           <template slot-scope="scope">{{
             scope.row.gender === 0 ? "雌" : "雄"
           }}</template>
         </el-table-column>
-        <el-table-column prop="eyeType" label="眼砂"> </el-table-column>
-        <el-table-column prop="color" label="羽色"> </el-table-column>
+        <el-table-column prop="eyeType" label="眼砂" width="60">
+        </el-table-column>
+        <el-table-column prop="color" label="羽色" width="70">
+        </el-table-column>
         <el-table-column prop="birthdate" label="生日">
           <template slot-scope="scope">{{
             scope.row.birthdate == null
@@ -328,23 +335,24 @@
         </el-table-column>
         <el-table-column prop="father" label="父（环号）"> </el-table-column>
         <el-table-column prop="mother" label="母（环号）"> </el-table-column>
-        <el-table-column prop="lost" label="丢失状态">
+        <el-table-column prop="lost" label="丢失状态" width="60">
           <template slot-scope="scope">{{
             scope.row.lost == false ? "-" : "丢失"
           }}</template>
         </el-table-column>
-        <el-table-column prop="dead" label="存活状态">
+        <el-table-column prop="dead" label="存活状态" width="60">
           <template slot-scope="scope">{{
             scope.row.dead == false ? "-" : "死亡"
           }}</template>
         </el-table-column>
-        <el-table-column prop="oint" label="积分">
+        <el-table-column prop="oint" label="积分" width="60">
           <template slot-scope="scope">{{
             scope.row.point == null ? "-" : scope.row.point
           }}</template>
         </el-table-column>
-        <el-table-column prop="point" label="操作" width="170">
+        <el-table-column prop="point" label="操作">
           <template slot-scope="scope">
+            <el-button size="mini" @click="record(scope.row)">记录</el-button>
             <el-button type="warning" size="mini" @click="edit(scope.row)"
               >编辑</el-button
             >
@@ -355,21 +363,21 @@
         </el-table-column>
       </el-table>
     </div>
-    <nav style="text-align:center;margin:3vh auto">
-    <div class="pages">
-      <div class="block">
-        <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page.sync="currentPage2"
-          :page-sizes="[10, 30, 50, 100]"
-          :page-size="10"
-          layout="total,sizes, prev, pager, next"
-          :total="totalElements"
-        >
-        </el-pagination>
+    <nav style="text-align: center; margin: 3vh auto">
+      <div class="pages">
+        <div class="block">
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page.sync="currentPage2"
+            :page-sizes="[10, 30, 50, 100]"
+            :page-size="10"
+            layout="total,sizes, prev, pager, next"
+            :total="totalElements"
+          >
+          </el-pagination>
+        </div>
       </div>
-    </div>
     </nav>
   </div>
 </template>
@@ -401,6 +409,7 @@ export default {
         birthdate: "",
         lost: "",
         dead: "",
+        point: false,
       },
       // 增加表单
       add_form: {
@@ -437,7 +446,7 @@ export default {
           { required: true, message: "请输入脚环号", trigger: "blur" },
           {
             pattern: /(\d\d-){0}\d{6}/,
-            message: "环号必须为数字，且按照11-22-123456格式",
+            message: "环号必须为数字，且按照11-22-1234567格式",
           },
         ],
         gender: [
@@ -486,6 +495,16 @@ export default {
     edit(row) {
       (this.dialogEditVisible = true),
         (this.edit_form = Object.assign({}, row));
+    },
+
+    // 跳转到记录页面
+    record(row) {
+      this.$router.push({
+        name: "Record",
+        params: {
+          number: row.number,
+        },
+      });
     },
 
     // 关闭编辑dialog
@@ -602,6 +621,4 @@ export default {
 .el-table {
   margin: 0 auto;
 }
-
-
 </style>

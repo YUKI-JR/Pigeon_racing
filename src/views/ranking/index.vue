@@ -1,12 +1,12 @@
 <template>
-  <div class="main">
+  <div>
     <el-row>
       <el-col :span="12">
         <div class="dashboard-container">
           <el-descriptions
             class="margin-top"
             style="width: 40vw"
-            title="当前飞行信息"
+            title="飞行信息"
             :column="2"
             border
           >
@@ -113,15 +113,12 @@
             </el-descriptions-item>
           </el-descriptions>
         </div>
-        <div style="margin: 30px 30px 0 36.5vw">
-          <el-button type="primary" @click="finish">结束飞行</el-button>
-        </div>
       </el-col>
       <el-col :span="12">
         <div class="table">
           <div style="margin-bottom: 20px">
             <span style="font-size: 16px; font-weight: 700; margin-bottom: 20px"
-              >当前排名</span
+              >排名</span
             >
           </div>
           <el-table :data="tableData" style="width: 100%" height="70vh">
@@ -161,13 +158,14 @@
 </template>
 
 <script>
-import { getCurrentFlight } from "@/api/table";
-import { getCurrentRanking } from "@/api/table";
+import { getOne } from "@/api/table";
+import { getRanking } from "@/api/table";
 import { flightFinish } from "@/api/table";
 import moment from "moment";
 export default {
   data() {
     return {
+      id: null,
       moment,
       flightData: {
         startTime: "",
@@ -190,15 +188,14 @@ export default {
   methods: {
     // 获取当前飞行
     getCurrent() {
-      getCurrentFlight().then((res) => {
+      getOne(this.$route.params.id).then((res) => {
         console.log(res);
         this.flightData = res.data;
       });
     },
-    getRanking() {
-      getCurrentRanking().then((res) => {
+    getRank() {
+      getRanking(this.$route.params.id).then((res) => {
         this.tableData = res.data;
-        console.log("已刷新");
       });
     },
     record(number) {
@@ -211,25 +208,17 @@ export default {
     },
     // 结束飞行
     finish() {
-      this.$confirm("此操作将结束飞行, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-      }).then(() => {
-        flightFinish().then(() => {
-          this.$message.success("飞行已结束！");
-          this.flightData = {};
-        });
+      flightFinish().then(() => {
+        this.$message.success("飞行已结束！");
+        this.flightData = {};
       });
     },
   },
   mounted() {
-    var that = this;
     this.getCurrent();
-    this.getRanking();
-    setInterval(function () {
-      that.getRanking();
-    }, 10000);
+    this.getRank();
+    this.id = this.$route.params.id;
+    console.log(this.id);
   },
 };
 </script>

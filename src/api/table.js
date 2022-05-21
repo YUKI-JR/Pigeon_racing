@@ -5,6 +5,7 @@ var token = sessionStorage.getItem("token");
 /**
  * 赛鸽信息页面
  */
+
 // 根据Id查询单只鸽子
 export function getOnePigeon(id) {
   return request({
@@ -69,6 +70,7 @@ export function editOnePigeon(editform) {
 /**
  * 飞行页面
  */
+
 // 增加一场飞行信息
 export function addOneFlight(form) {
   return request({
@@ -78,6 +80,20 @@ export function addOneFlight(form) {
       token: token,
     },
     data: form,
+  });
+}
+
+// 根据id获取一次
+export function getOne(id) {
+  return request({
+    url: "/flight/getOne",
+    method: "get",
+    headers: {
+      token: token,
+    },
+    params: {
+      id: id,
+    },
   });
 }
 
@@ -113,5 +129,74 @@ export function editOneFlight(editform) {
       token: token,
     },
     data: editform,
+  });
+}
+
+// 获取排名信息
+export function getRanking(id) {
+  return request({
+    url: "/flight/ranking",
+    method: "get",
+    headers: {
+      token: token,
+    },
+    params: {
+      id: id,
+    },
+  });
+}
+
+/**
+ * 仪表盘页面
+ */
+
+// 获取当前飞行
+export function getCurrentFlight() {
+  return request({
+    url: "/dashboard/currentFlight",
+    method: "get",
+    headers: {
+      token: token,
+    },
+  });
+}
+
+// 获取当前排名
+export function getCurrentRanking() {
+  return request({
+    url: "/dashboard/currentRanking",
+    method: "get",
+    headers: {
+      token: token,
+    },
+  });
+}
+
+// 获取当前排名
+export function flightFinish() {
+  return request({
+    url: "/flight/finish",
+    method: "get",
+    headers: {
+      token: token,
+    },
+  });
+}
+
+/**
+ * Record页面
+ */
+
+// 查看赛鸽飞行记录
+export function getFlightRecord(number) {
+  return request({
+    url: "/pigeonInfo/flightRecord",
+    method: "get",
+    headers: {
+      token: token,
+    },
+    params: {
+      number: number,
+    },
   });
 }
