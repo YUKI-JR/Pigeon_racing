@@ -139,6 +139,7 @@
             >
               <el-option label="训练" :value="0"></el-option>
               <el-option label="比赛" :value="1"></el-option>
+              <el-option label="特殊" :value="2"></el-option>
             </el-select>
           </el-form-item>
 
@@ -272,7 +273,7 @@
         ></el-table-column>
         <el-table-column prop="type" label="类型" width="80">
           <template slot-scope="scope">{{
-            ["训练", "比赛"][scope.row.type]
+            ["训练", "比赛","特殊"][scope.row.type]
           }}</template>
         </el-table-column>
         <el-table-column

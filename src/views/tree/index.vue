@@ -8,12 +8,12 @@
             size="normal"
             placeholder="环号"
             clearable
-            style="width: 10%"
+            style="width: 9%"
           ></el-input>
           <el-select
             v-model="p_form.gender"
             placeholder="鸽子性别"
-            style="width: 10%"
+            style="width: 9%"
             clearable
           >
             <el-option label="雄" value="1"></el-option>
@@ -22,7 +22,7 @@
           <el-select
             v-model="p_form.eyeType"
             placeholder="眼砂类型"
-            style="width: 10%"
+            style="width: 9%"
             clearable
           >
             <el-option label="牛" value="牛"></el-option>
@@ -32,7 +32,7 @@
           <el-select
             v-model="p_form.color"
             placeholder="选择羽色"
-            style="width: 10%"
+            style="width: 9%"
             clearable
           >
             <el-option label="白" value="白"></el-option>
@@ -58,20 +58,28 @@
             size="normal"
             placeholder="父（环号）"
             clearable
-            style="width: 10%"
+            style="width: 9%"
           ></el-input>
           <el-input
             v-model="p_form.mother"
             size="normal"
             placeholder="母（环号）"
             clearable
-            style="width: 10%"
+            style="width: 9%"
           ></el-input>
-
+          <el-select
+            v-model="p_form.birthdate"
+            placeholder="出生日期"
+            style="width: 9%"
+            clearable
+          >
+            <el-option label="上半年" value="1"></el-option>
+            <el-option label="下半年" value="2"></el-option>
+          </el-select>
           <el-select
             v-model="p_form.lost"
             placeholder="丢失状态"
-            style="width: 10%"
+            style="width: 9%"
             clearable
           >
             <el-option label="未丢失" value="false"></el-option>
@@ -80,7 +88,7 @@
           <el-select
             v-model="p_form.dead"
             placeholder="死亡状态"
-            style="width: 10%"
+            style="width: 9%"
             clearable
           >
             <el-option label="未死亡" value="false"></el-option>
@@ -102,7 +110,7 @@
         </div>
         <div class="query_add" style="width: 95%; margin: 0 auto">
           <el-button
-            style="width: 10%; float: right"
+            style="width: 9%; float: right"
             type="success"
             size="default"
             icon="el-icon-plus"
@@ -128,7 +136,29 @@
           style="width: 25vw"
         >
           <el-form-item label="环号" prop="number">
-            <el-input v-model="add_form.number" />
+            <el-input
+              ref="number1"
+              v-model="add_form.number"
+              style="width: 20%"
+              maxlength="2"
+              @input="moveToNum2(add_form.number)"
+            />
+            -
+            <el-input
+              ref="number2"
+              v-model="add_form.number2"
+              style="width: 20%"
+              maxlength="2"
+              @input="moveToNum3(add_form.number2)"
+            />
+            -
+            <el-input
+              ref="number3"
+              v-model="add_form.number3"
+              style="width: 45%"
+              @input="backToNum2(add_form.number3)"
+              maxlength="7"
+            />
           </el-form-item>
           <el-form-item label="性别" prop="gender">
             <el-select
@@ -177,17 +207,62 @@
             </el-select>
           </el-form-item>
           <el-form-item label="父（环号）" prop="father">
-            <el-input v-model="add_form.father" />
+            <el-input
+              id="father1"
+              ref="father1"
+              v-model="add_form.father"
+              style="width: 20%"
+              maxlength="2"
+              @input="moveToFather2(add_form.father)"
+            />-
+            <el-input
+              id="father2"
+              ref="father2"
+              v-model="add_form.father2"
+              style="width: 20%"
+              maxlength="2"
+              @input="moveToFather3(add_form.father2)"
+            />-
+            <el-input
+              id="father3"
+              ref="father3"
+              v-model="add_form.father3"
+              style="width: 45%"
+              maxlength="7"
+              @input="backToFather2(add_form.father3)"
+            />
           </el-form-item>
           <el-form-item label="母（环号）" prop="mother">
-            <el-input v-model="add_form.mother" />
+            <el-input
+              id="mother1"
+              ref="mother1"
+              v-model="add_form.mother"
+              style="width: 20%"
+              maxlength="2"
+              @input="moveToMother2(add_form.mother)"
+            />-
+            <el-input
+              id="mother2"
+              ref="mother2"
+              v-model="add_form.mother2"
+              style="width: 20%"
+              maxlength="2"
+              @input="moveToMother3(add_form.mother2)"
+            />-
+            <el-input
+              id="mother3"
+              ref="mother3"
+              v-model="add_form.mother3"
+              style="width: 45%"
+              maxlength="7"
+              @input="backToMother2(add_form.mother3)"
+            />
           </el-form-item>
           <el-form-item label="出生日期" prop="birthdate">
             <el-date-picker
               type="date"
               placeholder="选择出生日期"
               v-model="add_form.birthdate"
-              value-format="yyyyMMdd"
               style="width: 100%"
             ></el-date-picker>
           </el-form-item>
@@ -326,15 +401,23 @@
           <template slot-scope="scope">{{
             scope.row.birthdate == null
               ? "-"
-              : scope.row.birthdate.slice(0, 4) +
-                "-" +
-                scope.row.birthdate.slice(4, 6) +
-                "-" +
-                scope.row.birthdate.slice(6)
+              : moment(Number(scope.row.birthdate)).format("YYYY-MM-DD")
           }}</template>
         </el-table-column>
-        <el-table-column prop="father" label="父（环号）"> </el-table-column>
-        <el-table-column prop="mother" label="母（环号）"> </el-table-column>
+        <el-table-column prop="father" label="父（环号）">
+          <template slot-scope="scope">
+            <a @click="toFatherPigeon(scope.row.father)" style="color: #409eff">
+              {{ scope.row.father }}
+            </a>
+          </template>
+        </el-table-column>
+        <el-table-column prop="mother" label="母（环号）">
+          <template slot-scope="scope">
+            <a @click="toMotherPigeon(scope.row.mother)" style="color: #409eff">
+              {{ scope.row.mother }}
+            </a>
+          </template>
+        </el-table-column>
         <el-table-column prop="lost" label="丢失状态" width="60">
           <template slot-scope="scope">{{
             scope.row.lost == false ? "-" : "丢失"
@@ -383,6 +466,7 @@
 </template>
 
 <script>
+import moment from "moment";
 import { addOnePigeon } from "@/api/table";
 import { getAllPigeon } from "@/api/table";
 import { deleteOnePigeon } from "@/api/table";
@@ -391,6 +475,7 @@ import { editOnePigeon } from "@/api/table";
 export default {
   data() {
     return {
+      moment,
       tableData: [],
       dialogAddgsVisible: false,
       dialogEditVisible: false,
@@ -414,11 +499,17 @@ export default {
       // 增加表单
       add_form: {
         number: "",
+        number2: "",
+        number3: "",
         gender: null,
         eyeType: "",
         color: "",
         father: "",
+        father2: "",
+        father3: "",
         mother: "",
+        mother2: "",
+        mother3: "",
         birthdate: null,
         lost: "",
         dead: "",
@@ -442,13 +533,7 @@ export default {
       },
       dialogVisible: false,
       rules: {
-        number: [
-          { required: true, message: "请输入脚环号", trigger: "blur" },
-          {
-            pattern: /(\d\d-){0}\d{6}/,
-            message: "环号必须为数字，且按照11-22-1234567格式",
-          },
-        ],
+        number: [{ required: true, message: "请输入脚环号", trigger: "blur" }],
         gender: [
           { required: true, message: "请选择赛鸽性别", trigger: "change" },
         ],
@@ -456,17 +541,9 @@ export default {
         color: [{ required: true, message: "请输入羽色", trigger: "blur" }],
         father: [
           { required: true, message: "请输入父（环号）", trigger: "blur" },
-          {
-            pattern: /(\d\d-){0}\d{6}/,
-            message: "环号必须为数字，且按照11-22-123456格式",
-          },
         ],
         mother: [
           { required: true, message: "请输入母（环号）", trigger: "blur" },
-          {
-            pattern: /(\d\d-){0}\d{6}/,
-            message: "环号必须为数字，且按照11-22-123456格式",
-          },
         ],
         birthdate: [
           { required: true, message: "请选择赛鸽出生日期", trigger: "change" },
@@ -475,6 +552,8 @@ export default {
     };
   },
   mounted() {
+    this.p_form.father = this.$route.params.father;
+    this.p_form.mother = this.$route.params.mother;
     this.getAll();
   },
   methods: {
@@ -490,7 +569,80 @@ export default {
           this.$message.success("查询成功！");
         });
     },
+    /**
+     * 自动聚焦到下一个输入框
+     * */
 
+    // 环号部分
+    moveToNum2: function (num) {
+      if (num.length == 2) {
+        this.$refs.number2.focus();
+      }
+    },
+    moveToNum3: function (num2) {
+      switch (num2.length) {
+        case 2:
+          this.$refs.number3.focus();
+          break;
+        case 0:
+          this.$refs.number1.focus();
+          break;
+        default:
+          break;
+      }
+    },
+    backToNum2: function (num3) {
+      if (num3.length == 0) {
+        this.$refs.number2.focus();
+      }
+    },
+
+    // 父环号部分
+    moveToFather2: function (father) {
+      if (father.length == 2) {
+        this.$refs.father2.focus();
+      }
+    },
+    moveToFather3: function (father2) {
+      switch (father2.length) {
+        case 2:
+          this.$refs.father3.focus();
+          break;
+        case 0:
+          this.$refs.father1.focus();
+          break;
+        default:
+          break;
+      }
+    },
+    backToFather2: function (father3) {
+      if (father3.length == 0) {
+        this.$refs.father2.focus();
+      }
+    },
+    // 母环号部分
+    moveToMother2: function (mother1) {
+      if (mother1.length == 2) {
+        this.$refs.mother2.focus();
+      }
+    },
+    moveToMother3: function (mother2) {
+      switch (mother2.length) {
+        case 2:
+          this.$refs.mother3.focus();
+          break;
+        case 0:
+          this.$refs.mother1.focus();
+          break;
+        default:
+          break;
+      }
+    },
+    backToMother2: function (mother3) {
+      if (mother3.length == 0) {
+        this.$refs.mother2.focus();
+      }
+    },
     // 编辑单条信息
     edit(row) {
       (this.dialogEditVisible = true),
@@ -541,7 +693,26 @@ export default {
     addOneSubmit() {
       this.$refs.add_form.validate((valid) => {
         if (valid) {
-          addOnePigeon(this.add_form).then(() => {
+          this.add_form.number =
+            this.add_form.number +
+            "-" +
+            this.add_form.number2 +
+            "-" +
+            this.add_form.number3;
+          this.add_form.father =
+            this.add_form.father +
+            "-" +
+            this.add_form.father2 +
+            "-" +
+            this.add_form.father3;
+          this.add_form.mother =
+            this.add_form.mother +
+            "-" +
+            this.add_form.mother2 +
+            "-" +
+            this.add_form.mother3;
+          addOnePigeon(this.add_form).then((res) => {
+            console.log(res);
             this.closeDialogAddgsVisible();
             this.$message.success("添加成功！");
             this.getAll();
@@ -576,6 +747,16 @@ export default {
             message: "已取消删除",
           });
         });
+    },
+
+    toFatherPigeon(father) {
+      this.p_form.father = father;
+      this.getAll();
+    },
+
+    toMotherPigeon(mother) {
+      this.p_form.mother = mother;
+      this.getAll();
     },
     // 分页功能
     handleSizeChange(val) {

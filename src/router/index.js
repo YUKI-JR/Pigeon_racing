@@ -55,11 +55,9 @@ export const constantRoutes = [
   //     }
   //   ]
   // },
-
   {
     path: "/",
     component: Layout,
-    redirect: "/dashboard",
     children: [
       {
         path: "dashboard",
@@ -88,7 +86,22 @@ export const constantRoutes = [
         hidden:true,
         component: () => import("@/views/record/index"),
         meta: { title: "记录", icon: "dashboard" },
-      }
+      },
+    ],
+  },
+
+  {
+    path: "/breed_pigeon",
+    component: Layout,
+    name: "Breed_pigeon",
+    meta: { icon: "el-icon-s-help" },
+    children: [
+      {
+        path: "table",
+        name: "Breed_pigeon",
+        component: () => import("@/views/breedPigeon/index"),
+        meta: { title: "种鸽信息", icon: "el-icon-trophy" },
+      },
     ],
   },
 

@@ -1,5 +1,4 @@
 import request from "@/utils/request";
-import qs from "qs";
 var token = sessionStorage.getItem("token");
 
 /**
@@ -197,6 +196,21 @@ export function getFlightRecord(number) {
     },
     params: {
       number: number,
+    },
+  });
+}
+
+/**
+ * 种鸽页面
+ */
+
+// 获取种鸽父母信息
+export function getBreedPigeon() {
+  return request({
+    url: "/parent/getAll",
+    method: "get",
+    headers: {
+      token: token,
     },
   });
 }
