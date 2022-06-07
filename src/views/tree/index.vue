@@ -141,6 +141,7 @@
               v-model="add_form.number"
               style="width: 20%"
               maxlength="2"
+              @keyup.native="focusToNum2($event)"
               @input="moveToNum2(add_form.number)"
             />
             -
@@ -149,6 +150,8 @@
               v-model="add_form.number2"
               style="width: 20%"
               maxlength="2"
+              @keyup.native="focusToNum3($event)"
+              @keyup.native.delete="backToNum1(add_form.number2)"
               @input="moveToNum3(add_form.number2)"
             />
             -
@@ -156,6 +159,7 @@
               ref="number3"
               v-model="add_form.number3"
               style="width: 45%"
+              @keyup.native.delete="backToNum2(add_form.number3)"
               @input="backToNum2(add_form.number3)"
               maxlength="7"
             />
@@ -210,10 +214,11 @@
             <el-input
               id="father1"
               ref="father1"
-              v-model="add_form.father"
+              v-model="add_form.father1"
               style="width: 20%"
               maxlength="2"
-              @input="moveToFather2(add_form.father)"
+              @keyup.native="focusToFather2($event)"
+              @input="moveToFather2(add_form.father1)"
             />-
             <el-input
               id="father2"
@@ -221,6 +226,8 @@
               v-model="add_form.father2"
               style="width: 20%"
               maxlength="2"
+              @keyup.native="focusToFather3($event)"
+              @keyup.native.delete="backToFather1(add_form.father2)"
               @input="moveToFather3(add_form.father2)"
             />-
             <el-input
@@ -229,6 +236,7 @@
               v-model="add_form.father3"
               style="width: 45%"
               maxlength="7"
+              @keyup.native.delete="delToFather2(add_form.father3)"
               @input="backToFather2(add_form.father3)"
             />
           </el-form-item>
@@ -236,10 +244,11 @@
             <el-input
               id="mother1"
               ref="mother1"
-              v-model="add_form.mother"
+              v-model="add_form.mother1"
               style="width: 20%"
               maxlength="2"
-              @input="moveToMother2(add_form.mother)"
+              @keyup.native="focusToMother2($event)"
+              @input="moveToMother2(add_form.mother1)"
             />-
             <el-input
               id="mother2"
@@ -247,6 +256,8 @@
               v-model="add_form.mother2"
               style="width: 20%"
               maxlength="2"
+              @keyup.native="focusToMother3($event)"
+              @keyup.native.delete="backToMother1(add_form.mother2)"
               @input="moveToMother3(add_form.mother2)"
             />-
             <el-input
@@ -255,6 +266,7 @@
               v-model="add_form.mother3"
               style="width: 45%"
               maxlength="7"
+              @keyup.native.delete="delToMother2(add_form.mother3)"
               @input="backToMother2(add_form.mother3)"
             />
           </el-form-item>
@@ -292,7 +304,31 @@
           style="width: 25vw"
         >
           <el-form-item label="环号" prop="number">
-            <el-input v-model="edit_form.number" />
+            <el-input
+              ref="number1"
+              style="width: 20%"
+              maxlength="2"
+              v-model="edit_form.number1"
+              @keyup.native="focusToNum2($event)"
+              @input="moveToNum2(edit_form.number1, $event)"
+            />
+            <el-input
+              ref="number2"
+              style="width: 20%"
+              maxlength="2"
+              v-model="edit_form.number2"
+              @keyup.native="focusToNum3($event)"
+              @keyup.native.delete="backToNum1(edit_form.number2)"
+              @input="moveToNum3(edit_form.number2, $event)"
+            />
+            <el-input
+              ref="number3"
+              style="width: 45%"
+              maxlength="7"
+              v-model="edit_form.number3"
+              @keyup.native.delete="backToNum2(edit_form.number3)"
+              @input="backToNum2(edit_form.number3, $event)"
+            />
           </el-form-item>
           <el-form-item label="性别" prop="gender">
             <el-select
@@ -341,10 +377,64 @@
             </el-select>
           </el-form-item>
           <el-form-item label="父（环号）" prop="father">
-            <el-input v-model="edit_form.father" />
+            <el-input
+              id="father1"
+              ref="father1"
+              v-model="edit_form.father1"
+              style="width: 20%"
+              maxlength="2"
+              @keyup.native="focusToFather2($event)"
+              @input="moveToFather2(edit_form.father1, $event)"
+            />-
+            <el-input
+              id="father2"
+              ref="father2"
+              v-model="edit_form.father2"
+              style="width: 20%"
+              maxlength="2"
+              @keyup.native="focusToFather3($event)"
+              @keyup.native.delete="backToFather1(edit_form.father2)"
+              @input="moveToFather3(edit_form.father2, $event)"
+            />-
+            <el-input
+              id="father3"
+              ref="father3"
+              v-model="edit_form.father3"
+              style="width: 45%"
+              maxlength="7"
+              @keyup.native.delete="delToFather2(edit_form.father3)"
+              @input="backToFather2(edit_form.father3, $event)"
+            />
           </el-form-item>
           <el-form-item label="母（环号）" prop="mother">
-            <el-input v-model="edit_form.mother" />
+            <el-input
+              id="mother1"
+              ref="mother1"
+              v-model="edit_form.mother1"
+              style="width: 20%"
+              maxlength="2"
+              @keyup.native="focusToMother2($event)"
+              @input="moveToMother2(edit_form.mother1, $event)"
+            />-
+            <el-input
+              id="mother2"
+              ref="mother2"
+              v-model="edit_form.mother2"
+              style="width: 20%"
+              maxlength="2"
+              @keyup.native="focusToMother3($event)"
+              @keyup.native.delete="backToMother1(edit_form.mother2)"
+              @input="moveToMother3(edit_form.mother2, $event)"
+            />-
+            <el-input
+              id="mother3"
+              ref="mother3"
+              v-model="edit_form.mother3"
+              style="width: 45%"
+              maxlength="7"
+              @keyup.native.delete="delToMother2(edit_form.mother3)"
+              @input="backToMother2(edit_form.mother3, $event)"
+            />
           </el-form-item>
           <el-form-item label="存活状态" prop="dead">
             <el-select
@@ -504,10 +594,10 @@ export default {
         gender: null,
         eyeType: "",
         color: "",
-        father: "",
+        father1: "",
         father2: "",
         father3: "",
-        mother: "",
+        mother1: "",
         mother2: "",
         mother3: "",
         birthdate: null,
@@ -516,12 +606,18 @@ export default {
       },
       // 编辑表单
       edit_form: {
-        number: "",
+        number1: "",
+        number2: "",
+        number3: "",
         gender: "",
         eyeType: "",
         color: "",
-        father: "",
-        mother: "",
+        father1: "",
+        father2: "",
+        father3: "",
+        mother1: "",
+        mother2: "",
+        mother3: "",
         birthdate: "",
         lost: false,
         dead: false,
@@ -533,7 +629,6 @@ export default {
       },
       dialogVisible: false,
       rules: {
-        number: [{ required: true, message: "请输入脚环号", trigger: "blur" }],
         gender: [
           { required: true, message: "请选择赛鸽性别", trigger: "change" },
         ],
@@ -569,17 +664,31 @@ export default {
           this.$message.success("查询成功！");
         });
     },
+
     /**
      * 自动聚焦到下一个输入框
      * */
 
     // 环号部分
     moveToNum2: function (num) {
+      this.$forceUpdate();
       if (num.length == 2) {
         this.$refs.number2.focus();
       }
     },
+
+    focusToNum2(e) {
+      if (
+        (e.keyCode >= 48 &&
+          e.keyCode <= 57 &&
+          this.add_form.number.length == 2) ||
+        this.edit_form.number1.length == 2
+      ) {
+        this.$refs.number2.focus();
+      }
+    },
     moveToNum3: function (num2) {
+      this.$forceUpdate();
       switch (num2.length) {
         case 2:
           this.$refs.number3.focus();
@@ -597,13 +706,38 @@ export default {
       }
     },
 
+    focusToNum3(e) {
+      if (
+        (e.keyCode >= 48 &&
+          e.keyCode <= 57 &&
+          this.add_form.number2.length == 2) ||
+        this.edit_form.number2.length == 2
+      ) {
+        this.$refs.number3.focus();
+      }
+    },
+
+    backToNum1(num2) {
+      if (num2.length == 0) {
+        this.$refs.number1.focus();
+      } else return;
+    },
+    backToNum2(num3) {
+      this.$forceUpdate();
+      if (num3.length == 0) {
+        this.$refs.number2.focus();
+      } else return;
+    },
+
     // 父环号部分
-    moveToFather2: function (father) {
-      if (father.length == 2) {
+    moveToFather2: function (father1) {
+      this.$forceUpdate();
+      if (father1.length == 2) {
         this.$refs.father2.focus();
       }
     },
     moveToFather3: function (father2) {
+      this.$forceUpdate();
       switch (father2.length) {
         case 2:
           this.$refs.father3.focus();
@@ -616,17 +750,53 @@ export default {
       }
     },
     backToFather2: function (father3) {
+      this.$forceUpdate();
       if (father3.length == 0) {
         this.$refs.father2.focus();
       }
     },
+
+    focusToFather2(e) {
+      if (
+        (e.keyCode >= 48 &&
+          e.keyCode <= 57 &&
+          this.add_form.father1.length == 2) ||
+        this.edit_form.father1.length == 2
+      ) {
+        this.$refs.father2.focus();
+      }
+    },
+
+    focusToFather3(e) {
+      if (
+        (e.keyCode >= 48 &&
+          e.keyCode <= 57 &&
+          this.add_form.father2.length == 2) ||
+        this.edit_form.father2.length == 2
+      ) {
+        this.$refs.father3.focus();
+      }
+    },
+
+    backToFather1(father2) {
+      if (father2.length == 0) {
+        this.$refs.father1.focus();
+      } else return;
+    },
+    delToFather2(father3) {
+      if (father3.length == 0) {
+        this.$refs.father2.focus();
+      } else return;
+    },
     // 母环号部分
     moveToMother2: function (mother1) {
+      this.$forceUpdate();
       if (mother1.length == 2) {
         this.$refs.mother2.focus();
       }
     },
     moveToMother3: function (mother2) {
+      this.$forceUpdate();
       switch (mother2.length) {
         case 2:
           this.$refs.mother3.focus();
@@ -638,15 +808,59 @@ export default {
           break;
       }
     },
+
+    focusToMother2(e) {
+      if (
+        (e.keyCode >= 48 &&
+          e.keyCode <= 57 &&
+          this.add_form.mother1.length == 2) ||
+        this.edit_form.mother1.length == 2
+      ) {
+        this.$refs.mother2.focus();
+      }
+    },
+
+    focusToMother3(e) {
+      if (
+        (e.keyCode >= 48 &&
+          e.keyCode <= 57 &&
+          this.add_form.mother2.length == 2) ||
+        this.edit_form.mother2.length == 2
+      ) {
+        this.$refs.mother3.focus();
+      }
+    },
+
+    backToMother1(mother2) {
+      if (mother2.length == 0) {
+        this.$refs.mother1.focus();
+      } else return;
+    },
     backToMother2: function (mother3) {
+      this.$forceUpdate();
       if (mother3.length == 0) {
         this.$refs.mother2.focus();
       }
     },
+    delToMother2(mother3) {
+      if (mother3.length == 0) {
+        this.$refs.mother2.focus();
+      } else return;
+    },
+
     // 编辑单条信息
     edit(row) {
-      (this.dialogEditVisible = true),
-        (this.edit_form = Object.assign({}, row));
+      this.dialogEditVisible = true;
+      this.edit_form = Object.assign({}, row);
+      this.edit_form.number1 = row.number.substring(0, 2);
+      this.edit_form.number2 = row.number.substring(3, 5);
+      this.edit_form.number3 = row.number.substring(6, 13);
+      this.edit_form.father1 = row.father.substring(0, 2);
+      this.edit_form.father2 = row.father.substring(3, 5);
+      this.edit_form.father3 = row.father.substring(6, 13);
+      this.edit_form.mother1 = row.mother.substring(0, 2);
+      this.edit_form.mother2 = row.mother.substring(3, 5);
+      this.edit_form.mother3 = row.mother.substring(6, 13);
     },
 
     // 跳转到记录页面
@@ -667,6 +881,12 @@ export default {
     // 提交编辑表单
     editOneSubmit() {
       this.$refs.edit_form.validate((valid) => {
+        this.edit_form.number =
+          this.edit_form.number1 +
+          "-" +
+          this.edit_form.number2 +
+          "-" +
+          this.edit_form.number3;
         if (valid) {
           editOnePigeon(this.edit_form).then(() => {
             this.dialogEditVisible = false;
@@ -749,15 +969,18 @@ export default {
         });
     },
 
+    //只展示当前父环号的信息
     toFatherPigeon(father) {
       this.p_form.father = father;
       this.getAll();
     },
 
+    //只展示当前母环号的信息
     toMotherPigeon(mother) {
       this.p_form.mother = mother;
       this.getAll();
     },
+
     // 分页功能
     handleSizeChange(val) {
       this.pageAndSize.size = val;

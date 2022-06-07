@@ -207,10 +207,24 @@ export function getFlightRecord(number) {
 // 获取种鸽父母信息
 export function getBreedPigeon() {
   return request({
-    url: "/parent/getAll",
+    url: "/parent/query",
     method: "get",
     headers: {
       token: token,
+    },
+  });
+}
+
+// 删除种鸽信息
+export function deleteOnebreed(number) {
+  return request({
+    url: "/parent/delete",
+    method: "delete",
+    headers: {
+      token: token,
+    },
+    params: {
+      number:number
     },
   });
 }

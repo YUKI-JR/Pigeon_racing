@@ -50,8 +50,9 @@
             scope.row.point == null ? "-" : scope.row.point
           }}</template>
         </el-table-column>
-        <el-table-column prop="point" label="操作" width="110">
+        <el-table-column prop="point" label="操作" width="200">
           <template slot-scope="scope">
+            <el-button size="mini" type="danger" @click="del(scope.row.number)">删除</el-button>
             <el-button size="mini" @click="goToKids(scope.row)">子鸽信息</el-button>
           </template>
         </el-table-column>
@@ -62,6 +63,9 @@
 
 <script>
 import { getBreedPigeon } from "@/api/table";
+import { deleteOnebreed } from "@/api/table";
+
+
 export default {
   data() {
     return {
@@ -87,6 +91,33 @@ export default {
         this.$message.success("查询成功！");
       });
     },
+
+    // 删除种鸽信息
+    del(id){
+      this.$confirm("此操作将删除该飞行信息, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          deleteOnebreed(id).then((res) => {
+            console.log(res);
+            this.$message({
+              type: "success",
+              message: "删除成功!",
+            });
+            setTimeout(this.getAll(), 2000);
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
+    },
+
+    // 跳转到子鸽页面
     goToKids(row) {
       if (row.gender == 1) {
         this.$router.push({

@@ -79,6 +79,7 @@
           ref="add_form"
           label-width="6vw"
           style="width: 25vw"
+          :rules="rules"
         >
           <el-form-item label="放飞地点" prop="locationName">
             <el-input v-model="add_form.locationName" />
@@ -273,7 +274,7 @@
         ></el-table-column>
         <el-table-column prop="type" label="类型" width="80">
           <template slot-scope="scope">{{
-            ["训练", "比赛","特殊"][scope.row.type]
+            ["训练", "比赛", "特殊"][scope.row.type]
           }}</template>
         </el-table-column>
         <el-table-column
@@ -406,6 +407,9 @@ export default {
         size: 10,
       },
       dialogVisible: false,
+      rules: {
+        type: [{ required: true, message: "请选择类型", trigger: "change" }],
+      },
     };
   },
   mounted() {

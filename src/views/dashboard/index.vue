@@ -114,7 +114,9 @@
           </el-descriptions>
         </div>
         <div style="margin: 30px 30px 0 36.5vw">
-          <el-button type="primary" @click="finish">结束飞行</el-button>
+          <el-button type="primary" :disabled="dis" @click="finish"
+            >结束飞行</el-button
+          >
         </div>
       </el-col>
       <el-col :span="12">
@@ -132,16 +134,21 @@
                 }}</a></template
               >
             </el-table-column>
-            <el-table-column prop="duration" label="耗时" width="120">
+            <el-table-column prop="duration" label="耗时" width="150">
               <template slot-scope="scope">{{
                 parseInt(scope.row.duration / 3600) +
-                ":" +
-                parseInt((scope.row.duration % 3600) / 60) +
-                ":" +
-                parseInt((scope.row.duration % 3600) % 60)
+                " 时 " +
+                (
+                  Array(2).join(0) + parseInt((scope.row.duration % 3600) / 60)
+                ).slice(-2) +
+                " 分 " +
+                (
+                  Array(2).join(0) + parseInt((scope.row.duration % 3600) % 60)
+                ).slice(-2) +
+                " 秒"
               }}</template>
             </el-table-column>
-            <el-table-column prop="speed" label="速度" width="120">
+            <el-table-column prop="speed" label="速度(m/s)" width="120">
               <template slot-scope="scope">{{
                 scope.row.speed.toFixed(2)
               }}</template>
@@ -169,6 +176,7 @@ export default {
   data() {
     return {
       moment,
+      dis: true,
       flightData: {
         startTime: "",
         locationName: "",
@@ -191,8 +199,11 @@ export default {
     // 获取当前飞行
     getCurrent() {
       getCurrentFlight().then((res) => {
-        console.log(res);
         this.flightData = res.data;
+        console.log(this.flightData);
+        if (this.flightData) {
+          this.dis = false;
+        } else this.dis = true;
       });
     },
     getRanking() {
@@ -211,6 +222,7 @@ export default {
     },
     // 结束飞行
     finish() {
+      this.dis = false;
       this.$confirm("此操作将结束飞行, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -219,6 +231,7 @@ export default {
         flightFinish().then(() => {
           this.$message.success("飞行已结束！");
           this.flightData = {};
+          window.location.reload();
         });
       });
     },
@@ -246,6 +259,5 @@ export default {
 }
 .table {
   margin: 30px;
-  // width: 45vw;
 }
 </style>
